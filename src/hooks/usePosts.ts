@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../lib/api'
-import type { Category, Page, Post, PostImage, SortOption } from '../types'
+import type { Category, Page, Post, SortOption } from '../types'
 
 export interface PostFilter {
   search?: string
@@ -44,7 +44,6 @@ export interface PostInput {
   title: string
   body: string
   category: Category
-  images: PostImage[]
 }
 
 export function useCreatePost() {

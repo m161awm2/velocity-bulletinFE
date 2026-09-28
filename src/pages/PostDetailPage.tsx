@@ -66,14 +66,6 @@ export function PostDetailPage() {
         <span>조회 {post.viewCount}</span>
       </div>
 
-      {post.images.length > 0 && (
-        <div className="mb-4 flex flex-wrap gap-3">
-          {post.images.map((image) => (
-            <img key={image.objectKey} src={image.url} alt="" className="max-h-80 rounded" />
-          ))}
-        </div>
-      )}
-
       <p className="mb-6 whitespace-pre-wrap text-sm text-slate-800">{post.body}</p>
 
       <div className="mb-6 flex items-center gap-3">
