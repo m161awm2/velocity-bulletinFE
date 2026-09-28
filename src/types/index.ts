@@ -17,13 +17,6 @@ export interface PublicAuthor {
   displayName: string
 }
 
-export interface PostImage {
-  id?: string
-  objectKey: string
-  url: string
-  position?: number
-}
-
 export interface Post {
   id: string
   authorId: string
@@ -33,7 +26,6 @@ export interface Post {
   category: Category
   viewCount: number
   likeCount: number
-  images: PostImage[]
   createdAt: string
   updatedAt: string
 }
@@ -64,12 +56,4 @@ export interface AuthResponse {
 export interface ApiErrorBody {
   error: { code: string; message: string }
   requestId: string
-}
-
-export interface PresignedUpload {
-  uploadUrl: string
-  objectKey: string
-  publicUrl: string
-  headers: Record<string, string>
-  expiresAt: string
 }

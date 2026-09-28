@@ -5,10 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { z } from 'zod'
 import { useAuth } from '../auth/AuthContext'
 import { CATEGORY_OPTIONS } from '../components/CategoryBadge'
-import { ImageUploader } from '../components/ImageUploader'
 import { getApiErrorMessage } from '../lib/api'
 import { useCreatePost, usePost, useUpdatePost } from '../hooks/usePosts'
-import type { Category, PostImage } from '../types'
+import type { Category } from '../types'
 
 const schema = z.object({
   title: z.string().min(2, '제목은 2자 이상이어야 합니다.').max(200, '제목은 200자 이하여야 합니다.'),
@@ -23,7 +22,6 @@ export function PostFormPage() {
   const isEdit = Boolean(id)
   const { user } = useAuth()
   const navigate = useNavigate()
-  const [images, setImages] = useState<PostImage[]>([])
   const [error, setError] = useState<string | null>(null)
 
   const { data: existingPost } = usePost(id)
@@ -43,7 +41,6 @@ export function PostFormPage() {
   useEffect(() => {
     if (existingPost) {
       reset({ title: existingPost.title, body: existingPost.body, category: existingPost.category })
-      setImages(existingPost.images)
     }
   }, [existingPost, reset])
 
@@ -54,10 +51,9 @@ export function PostFormPage() {
   async function onSubmit(values: FormValues) {
     setError(null)
     try {
-      const input = { ...values, images }
       const post = isEdit
-        ? await updatePost.mutateAsync(input)
-        : await createPost.mutateAsync(input)
+        ? await updatePost.mutateAsync(values)
+        : await createPost.mutateAsync(values)
       navigate(`/posts/${post.id}`)
     } catch (err) {
       setError(getApiErrorMessage(err))
@@ -103,7 +99,6 @@ export function PostFormPage() {
           />
           {errors.body && <p className="mt-1 text-xs text-rose-600">{errors.body.message}</p>}
         </div>
-        <ImageUploader images={images} onChange={setImages} />
         {error && <p className="text-sm text-rose-600">{error}</p>}
         <button
           type="submit"
